@@ -3,36 +3,42 @@ const mongoose = require("mongoose")
 const adSchema = mongoose.Schema({
     title: {
         type: String,
-        required: true,
+        require: true,
     },
     desc: {
         type: String,
-        required: true,
+        require: true,
     },
     price: {
         type: Number,
-        required: true,
+        require: true,
     },
-    sellerID: {
-        type: Number,
-        required: true,
+    seller: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        require: true,
     },
-    categoryID: {
-        type: Number,
-        required: true,
+    category: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Category',
+        require: true,
     },
     interestedBuyers: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Ad',
+        ref: 'User',
     }],
-    buyerID: {
-        type: Number,
-        required: true,
+    buyer: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        require: true,
     },
     createdAt: {
         type: Date,
         default: Date.now
-    }
+    },
+    closedAt: {
+        type: Date
+    },
 });
 
 const AdModel = mongoose.model("Ad", adSchema);
