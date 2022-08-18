@@ -5,7 +5,7 @@ const categorySchema = mongoose.Schema({
     name: {
         type: String,
         unique: true,
-        require: true,
+        required: true,
     },
     active: {
         type: Boolean,

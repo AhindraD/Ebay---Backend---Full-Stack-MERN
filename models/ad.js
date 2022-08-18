@@ -4,25 +4,25 @@ const mongoose = require("mongoose")
 const adSchema = mongoose.Schema({
     title: {
         type: String,
-        require: true,
+        required: true,
     },
     desc: {
         type: String,
-        require: true,
+        required: true,
     },
     price: {
         type: Number,
-        require: true,
+        required: true,
     },
     seller: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-        require: true,
+        required: true,
     },
     category: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Category',
-        require: true,
+        required: true,
     },
     interestedBuyers: [
         {
@@ -33,7 +33,6 @@ const adSchema = mongoose.Schema({
     buyer: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-        require: true,
     },
     createdAt: {
         type: Date,
