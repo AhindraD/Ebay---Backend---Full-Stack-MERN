@@ -26,6 +26,7 @@ router.post('/signup', async (request, response) => {
     const salt = await bcrypt.genSalt(saltRounds);
     const hash = await bcrypt.hash(password, salt);
 
+    //creating document/account for entered details
     const newUser = new UserModel({
         name,
         email,
@@ -33,11 +34,33 @@ router.post('/signup', async (request, response) => {
     });
 
     try {
+        //saving the doc/account to database collection
         const saveUser = await newUser.save();
         response.status(201).send("User created with ID: " + saveUser.id);
     } catch (e) {
         response.status(501).send(e.message)
     }
 });
+
+router.post('/login', async (request, response) => {
+    const { email, password } = request.body;
+    if (!email || !password) {
+        return response.status(400).send('All fields are required!');
+    }
+
+    const existingUser = await UserModel.findOne({ email: email });
+    if (existingUser == null) {
+        return response.status(400).send('Email does not exist!');
+    }
+
+    //Compare password HASH
+    const ifCorrectPassword = await bcrypt.compare(password, existingUser.password);
+    if (!ifCorrectPassword) {
+        response.status(400).send("Invalid Password Provided!");
+    } else {
+        response.status(200).json(existingUser.toJSON());
+    }
+});
+
 
 module.exports = router;

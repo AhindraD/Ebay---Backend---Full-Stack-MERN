@@ -16,7 +16,11 @@ const userSchema = mongoose.Schema({
     ads: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Ad',
-    }]
+    }],
+    createdAt: {
+        type: Date,
+        default: Date.now
+    }
 });
 
 const UserModel = mongoose.model("User", userSchema);
