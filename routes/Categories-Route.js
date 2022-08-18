@@ -27,4 +27,14 @@ router.post('/add', async (request, response) => {
     }
 });
 
+router.delete('/delete/:id', async (request, response) => {
+    //console.log(request.params.id);
+    try {
+        await CategoryModel.deleteOne({ _id: request.params.id });
+        response.status(202).send("Category DELETED with ID: " + request.params.id);
+    } catch (e) {
+        response.status(501).send(e.message)
+    }
+})
+
 module.exports = router;
