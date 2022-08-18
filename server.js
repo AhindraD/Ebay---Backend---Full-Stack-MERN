@@ -12,13 +12,17 @@ mongoose.connect(DB_URL, {
 
 //All routes import
 const authRouter = require('./routes/auth');
-const app = express();
+const categoriesRouter = require('./routes/Categories-Route');
+const adsRouter = require('./routes/Ads-Route');
 
+const app = express();
 //MIddleWare usage
 app.use(express.json());
 
 //Router related usage
 app.use('/auth', authRouter);
+app.use('/ads', categoriesRouter);
+app.use('/categories', adsRouter);
 
 
 app.listen(8000);

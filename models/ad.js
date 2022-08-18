@@ -1,5 +1,6 @@
 const mongoose = require("mongoose")
-//
+// title, description, price, seller (user id), category (category id), interestedBuyers[], buyer
+
 const adSchema = mongoose.Schema({
     title: {
         type: String,
