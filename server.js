@@ -21,8 +21,8 @@ app.use(express.json());
 
 //Router related usage
 app.use('/auth', authRouter);
-app.use('/ads', categoriesRouter);
-app.use('/categories', adsRouter);
+app.use('/categories', categoriesRouter);
+app.use('/ads', adsRouter);
 
 
 app.listen(8000);
