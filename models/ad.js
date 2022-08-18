@@ -23,10 +23,12 @@ const adSchema = mongoose.Schema({
         ref: 'Category',
         require: true,
     },
-    interestedBuyers: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-    }],
+    interestedBuyers: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+        }
+    ],
     buyer: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
