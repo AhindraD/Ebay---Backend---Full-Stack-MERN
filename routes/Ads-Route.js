@@ -64,6 +64,22 @@ router.post('/:adId/buyers/:buyerId', async (request, response) => {
     } catch (e) {
         response.status(501).send(e.message)
     }
+});
+
+
+//Sold / Closed Ad
+router.post('/:adId/sold/:buyerId', async (request, response) => {
+    //console.log(request.params.adId);
+    try {
+        await AdModel.updateOne({ _id: request.params.adId }, {
+            "closedAt": Date.now,
+            "buyer": request.params.buyerId
+        });
+
+        response.status(202).send("SOLD to Buyer with ID: " + request.params.buyerId);
+    } catch (e) {
+        response.status(501).send(e.message)
+    }
 })
 
 module.exports = router;
