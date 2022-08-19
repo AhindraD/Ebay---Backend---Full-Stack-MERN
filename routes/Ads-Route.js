@@ -72,7 +72,7 @@ router.post('/:adId/sold/:buyerId', async (request, response) => {
     //console.log(request.params.adId);
     try {
         await AdModel.updateOne({ _id: request.params.adId }, {
-            "closedAt": Date.now,
+            "closedAt": Date.now(),
             "buyer": request.params.buyerId
         });
 
