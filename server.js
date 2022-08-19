@@ -20,7 +20,7 @@ const app = express();
 
 //MIddleWare usage
 app.use(cors());
-app.use(express.json());
+app.use(express.json({extended: true}));
 
 //Router related usage
 app.use('/auth', authRouter);
