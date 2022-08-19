@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors')
 
 const DB_URL = "mongodb+srv://apptest:apptest1234@cluster0.1u9xnky.mongodb.net/?retryWrites=true&w=majority";
 
@@ -18,6 +19,7 @@ const adsRouter = require('./routes/Ads-Route');
 const app = express();
 //MIddleWare usage
 app.use(express.json());
+app.use(cors());
 
 //Router related usage
 app.use('/auth', authRouter);
