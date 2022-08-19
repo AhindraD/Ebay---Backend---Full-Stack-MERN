@@ -1,5 +1,6 @@
 const express = require('express');
 const AdModel = require('../models/ad');
+const UserModel = require('../models/user');
 
 const router = express.Router();
 
@@ -29,7 +30,16 @@ router.post('/new', async (request, response) => {
     try {
         //saving the doc/Ads to database collection
         const saveAds = await newAds.save();
+
+        //addind the Ad-ID to the seller profile
+        await UserModel.updateOne({ _id: seller }, {
+            $push: {
+                "ads": saveAds.id
+            }
+        });
+
         response.status(201).send("Ad created with ID: " + saveAds.id);
+
     } catch (e) {
         response.status(501).send(e.message)
     }
