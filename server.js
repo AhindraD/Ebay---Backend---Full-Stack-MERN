@@ -8,7 +8,7 @@ mongoose.connect(DB_URL, {
     useUnifiedTopology: true,
     useNewURLParser: true,
 })
-    .then(() => console.log("Connected to DB"))
+    .then(() => console.log("Connected to MongoDB"))
     .catch((err) => console.log(err))
 
 //All routes import
