@@ -1,4 +1,5 @@
 # Ebay---Full-Stack---Project-Friday
+![all request endpoints](https://github.com/AhindraD/Ebay---Backend---Full-Stack-MERN/blob/master/images/allReqs.png?raw=true)
 <br>
 <br>
 <br>
