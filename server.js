@@ -17,9 +17,10 @@ const categoriesRouter = require('./routes/Categories-Route');
 const adsRouter = require('./routes/Ads-Route');
 
 const app = express();
+
 //MIddleWare usage
-app.use(express.json());
 app.use(cors());
+app.use(express.json());
 
 //Router related usage
 app.use('/auth', authRouter);
