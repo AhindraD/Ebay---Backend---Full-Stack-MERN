@@ -10,22 +10,37 @@ router.get('/show', async (request, response) => {
 });
 
 router.post('/new', async (request, response) => {
-    const { name } = request.body;
-    if (!name) {
+    const { title, desc, price, seller, category } = request.body;
+
+    if (!title || !desc || !price || !seller || !category) {
         return response.status(400).send('Input required!');
     }
-    //creating document/Category for entered details
-    const newCat = new AdModel({
-        name,
+    //creating document/Ads for entered details
+    const newAds = new AdModel({
+        title,
+        desc,
+        price,
+        seller,
+        category,
     });
 
     try {
-        //saving the doc/Category to database collection
-        const saveCat = await newCat.save();
-        response.status(201).send("Category created with ID: " + saveCat.id);
+        //saving the doc/Ads to database collection
+        const saveAds = await newAds.save();
+        response.status(201).send("Ad created with ID: " + saveAds.id);
     } catch (e) {
         response.status(501).send(e.message)
     }
 });
+
+router.delete('/delete/:id', async (request, response) => {
+    //console.log(request.params.id);
+    try {
+        await AdModel.deleteOne({ _id: request.params.id }, { active: false });
+        response.status(202).send("Ad DELETED with ID: " + request.params.id);
+    } catch (e) {
+        response.status(501).send(e.message)
+    }
+})
 
 module.exports = router;
