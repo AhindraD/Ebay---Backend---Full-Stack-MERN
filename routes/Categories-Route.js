@@ -27,11 +27,11 @@ router.post('/add', async (request, response) => {
     }
 });
 
-router.delete('/delete/:id', async (request, response) => {
+router.post('/delete/:id', async (request, response) => {
     //console.log(request.params.id);
     try {
-        await CategoryModel.deleteOne({ _id: request.params.id });
-        response.status(202).send("Category DELETED with ID: " + request.params.id);
+        await CategoryModel.updateOne({ _id: request.params.id }, { active: false });
+        response.status(202).send("Category Marked IN-Active with ID: " + request.params.id);
     } catch (e) {
         response.status(501).send(e.message)
     }
