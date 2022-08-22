@@ -1,6 +1,7 @@
 //const { request, response } = require('express');
 const express = require('express');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const UserModel = require('../models/user')
 
 const router = express.Router();
@@ -58,7 +59,16 @@ router.post('/login', async (request, response) => {
     if (!ifCorrectPassword) {
         response.status(400).send("Invalid Password Provided!");
     } else {
-        response.status(200).json(existingUser.toJSON());
+
+        const payload = {
+            id: existingUser.id,
+            email: existingUser.email,
+        }
+
+        const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET)
+
+        response.status(200).json({accessToken});
+        // response.status(200).json(existingUser.toJSON());
     }
 });
 

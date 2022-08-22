@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors')
@@ -20,7 +22,7 @@ const app = express();
 
 //MIddleWare usage
 app.use(cors());
-app.use(express.json({extended: true}));
+app.use(express.json({ extended: true }));
 
 //Router related usage
 app.use('/auth', authRouter);
