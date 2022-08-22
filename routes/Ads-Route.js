@@ -1,13 +1,38 @@
 const express = require('express');
 const AdModel = require('../models/ad');
 const UserModel = require('../models/user');
+const jwt = require('jsonwebtoken');
 
 const router = express.Router();
 
 //SHOW ALL ADS
 router.get('/show', async (request, response) => {
-    const ads = await AdModel.find({});
-    response.status(200).json(ads);
+    //const ads = await AdModel.find({});
+
+    const authHeaderInfo = request.headers['authorization'];
+    if (authHeaderInfo == undefined) {
+        return response.status(401).send("No token was provided!");
+    }
+
+    const token = authHeaderInfo.split(' ')[1];
+    if (token == undefined) {
+        return response.status(401).send("Proper token was not provided!");
+    }
+
+    try {
+        const payload = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+        const ads = await AdModel.find({})
+            .populate("seller", "name")
+            .populate("buyer", "name")
+            .populate("category", "name")
+            .populate("interestedBuyers", "name")
+
+        response.status(200).json(ads);
+    }
+    catch {
+        return response.status(401).send("Invalid token  provided!");
+    }
+
 });
 
 
