@@ -9,30 +9,30 @@ const router = express.Router();
 router.get('/show', async (request, response) => {
     //const ads = await AdModel.find({});
 
-    const authHeaderInfo = request.headers['authorization'];
-    if (authHeaderInfo == undefined) {
-        return response.status(401).send("No token was provided!");
-    }
+    //DID AUTH-CHECK in SERVER.js
+    // const authHeaderInfo = request.headers['authorization'];
+    // if (authHeaderInfo == undefined) {
+    //     return response.status(401).send("No token was provided!");
+    // }
 
-    const token = authHeaderInfo.split(' ')[1];
-    if (token == undefined) {
-        return response.status(401).send("Proper token was not provided!");
-    }
+    // const token = authHeaderInfo.split(' ')[1];
+    // if (token == undefined) {
+    //     return response.status(401).send("Proper token was not provided!");
+    // }
 
-    try {
-        const payload = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-        const ads = await AdModel.find({})
-            .populate("seller", "name")
-            .populate("buyer", "name")
-            .populate("category", "name")
-            .populate("interestedBuyers", "name")
+    // try {
+    //     const payload = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+    const ads = await AdModel.find({})
+        .populate("seller", "name")
+        .populate("buyer", "name")
+        .populate("category", "name")
+        .populate("interestedBuyers", "name")
 
-        response.status(200).json(ads);
-    }
-    catch {
-        return response.status(401).send("Invalid token  provided!");
-    }
-
+    response.status(200).json(ads);
+    // }
+    // catch {
+    //     return response.status(401).send("Invalid token  provided!");
+    // }
 });
 
 

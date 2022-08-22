@@ -2,6 +2,7 @@ require('dotenv').config();
 
 const express = require('express');
 const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
 const cors = require('cors')
 
 const DB_URL = "mongodb+srv://apptest:apptest1234@cluster0.1u9xnky.mongodb.net/?retryWrites=true&w=majority";
@@ -26,8 +27,35 @@ app.use(express.json({ extended: true }));
 
 //Router related usage
 app.use('/auth', authRouter);
-app.use('/categories', categoriesRouter);
-app.use('/ads', adsRouter);
+
+//adding custom middleWare
+app.use('/categories', authenticateRequest, categoriesRouter);
+app.use('/ads', authenticateRequest, adsRouter);
 
 
 app.listen(8000);
+
+
+//custom middleware to prevent un-authorized access
+
+function authenticateRequest(request, response, next) {
+    const authHeaderInfo = request.headers['authorization'];
+    if (authHeaderInfo == undefined) {
+        return response.status(401).send("No token was provided!");
+    }
+
+    const token = authHeaderInfo.split(' ')[1];
+    if (token == undefined) {
+        return response.status(401).send("Proper token was not provided!");
+    }
+
+    try {
+        const payload = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+        request.userInfo = payload;
+        next();
+    }
+    catch (err) {
+        return response.status(401).send("Invalid token  provided!", err.message);
+    }
+
+}
