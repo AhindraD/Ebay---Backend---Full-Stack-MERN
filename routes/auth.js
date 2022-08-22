@@ -67,7 +67,7 @@ router.post('/login', async (request, response) => {
 
         const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET)
 
-        response.status(200).json({accessToken});
+        response.status(200).json({ accessToken, existingUser });
         // response.status(200).json(existingUser.toJSON());
     }
 });

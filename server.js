@@ -52,10 +52,11 @@ function authenticateRequest(request, response, next) {
     try {
         const payload = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
         request.userInfo = payload;
+        console.log(request.userInfo);
         next();
     }
     catch (err) {
-        return response.status(401).send("Invalid token  provided!", err.message);
+        return response.status(401).send("Invalid token  provided! " + err.message);
     }
 
 }
