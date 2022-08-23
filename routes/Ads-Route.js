@@ -68,7 +68,7 @@ router.post('/new', upload.single('image'), async (request, response) => {
         desc,
         price,
         seller,
-        category,
+        category: category[1],
         imageUrl,
     });
 
