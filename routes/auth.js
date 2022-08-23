@@ -2,7 +2,7 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const UserModel = require('../models/user')
+const UserModel = require('../models/user');
 
 const router = express.Router();
 
@@ -65,12 +65,40 @@ router.post('/login', async (request, response) => {
             email: existingUser.email,
         }
 
-        const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET)
+        const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: process.env.ACCESS_TOKEN_EXPIRATION_TIME });
 
-        response.status(200).json({ accessToken, existingUser });
+        const refreshToken = jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, { expiresIn: process.env.REFRESH_TOKEN_EXPIRATION_TIME });
+        refreshTokens.push(refreshToken);
+
+        response.status(200).json({ accessToken, refreshToken, existingUser });
         // response.status(200).json(existingUser.toJSON());
     }
 });
+
+const refreshTokens = [];
+
+router.post('/token', async (request, response) => {
+    //get refresh token & validate, then generate access token
+    const refreshToken = request.body.token;
+    if (!refreshToken) {
+        return response.status(401).send("Please provie Refresh Token")
+    }
+    if (!refreshTokens.includes(refreshToken)) {
+        return response.status(401).send("Invalid Refresh Token")
+    }
+
+    try {
+        const payload = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
+
+        delete payload.exp;
+        const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: process.env.ACCESS_TOKEN_EXPIRATION_TIME });
+
+        return response.status(400).send({ accessToken })
+    }
+    catch (err) {
+        return response.status(401).send("ERROR : " + err.message)
+    }
+})
 
 
 module.exports = router;
