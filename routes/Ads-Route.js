@@ -2,8 +2,22 @@ const express = require('express');
 const AdModel = require('../models/ad');
 const UserModel = require('../models/user');
 const jwt = require('jsonwebtoken');
-
+const multer = require("multer");
 const router = express.Router();
+
+
+const storage = multer.diskStorage(
+    {
+        destination: function (req, file, cb) {
+            cb(null, "public/uploads")
+        },
+        filename: function (req, file, cb) {
+            cb(null, Date.now() + "-" + file.originalname)
+        }
+    }
+);
+
+const upload = multer({ storage: storage });
 
 //SHOW ALL ADS
 router.get('/show', async (request, response) => {
@@ -37,9 +51,14 @@ router.get('/show', async (request, response) => {
 
 
 //CREATE a new AD
-router.post('/new', async (request, response) => {
+router.post('/new', upload.single('image'), async (request, response) => {
     const { title, desc, price, seller, category } = request.body;
 
+    let uploadedFile = request.file.filename;
+    uploadedFile = 'uploads/' + uploadedFile;
+    let imageUrl = process.env.BASE_URL + uploadedFile;
+    //console.log(process.env.BASE_URL);
+    console.log(imageUrl);
     if (!title || !desc || !price || !seller || !category) {
         return response.status(400).send('Input required!');
     }
@@ -50,6 +69,7 @@ router.post('/new', async (request, response) => {
         price,
         seller,
         category,
+        imageUrl,
     });
 
     try {

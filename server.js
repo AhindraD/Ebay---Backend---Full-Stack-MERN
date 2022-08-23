@@ -4,6 +4,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const cors = require('cors')
+const morgan = require('morgan')
 
 const DB_URL = "mongodb+srv://apptest:apptest1234@cluster0.1u9xnky.mongodb.net/?retryWrites=true&w=majority";
 
@@ -23,7 +24,10 @@ const app = express();
 
 //MIddleWare usage
 app.use(cors());
-app.use(express.json({ extended: true }));
+app.use(express.static("public"));
+app.use(express.urlencoded({extended:false}));
+app.use(express.json({}));
+app.use(morgan("dev"));
 
 //Router related usage
 app.use('/auth', authRouter);

@@ -41,6 +41,9 @@ const adSchema = mongoose.Schema({
     closedAt: {
         type: Date
     },
+    imageUrl:{
+        type:String
+    }
 });
 
 const AdModel = mongoose.model("Ad", adSchema);
