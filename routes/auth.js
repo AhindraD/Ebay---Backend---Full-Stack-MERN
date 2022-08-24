@@ -83,9 +83,9 @@ router.post('/token', async (request, response) => {
     if (!refreshToken) {
         return response.status(401).send("Please provie Refresh Token")
     }
-    if (!refreshTokens.includes(refreshToken)) {
-        return response.status(401).send("Invalid Refresh Token")
-    }
+   // if (!refreshTokens.includes(refreshToken)) {
+      //  return response.status(401).send("Invalid Refresh Token")
+    //}
 
     try {
         const payload = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
@@ -93,7 +93,7 @@ router.post('/token', async (request, response) => {
         delete payload.exp;
         const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: process.env.ACCESS_TOKEN_EXPIRATION_TIME });
 
-        return response.status(400).send({ accessToken })
+        return response.status(200).send({ accessToken })
     }
     catch (err) {
         return response.status(401).send("ERROR : " + err.message)
