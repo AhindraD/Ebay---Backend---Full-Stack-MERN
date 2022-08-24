@@ -37,7 +37,7 @@ app.use('/categories', authenticateRequest, categoriesRouter);
 app.use('/ads', authenticateRequest, adsRouter);
 
 
-app.listen(8000);
+app.listen(process.env.PORT || 8000)
 
 
 //custom middleware to prevent un-authorized access
